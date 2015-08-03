@@ -16,6 +16,7 @@
 
 library adaptify.annotations;
 
+@MirrorsUsed(metaTargets: Requirement)
 import 'dart:mirrors';
 
 enum Consumption {
