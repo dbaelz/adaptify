@@ -16,4 +16,7 @@
 
 library adaptify;
 
-export 'src/adaptify_base.dart';
+export 'src/annotations.dart';
+export 'src/strategy/base_strategy.dart';
+export 'src/strategy/conditional_expression.dart';
+export 'src/decisionunit.dart';

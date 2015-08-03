@@ -14,14 +14,18 @@
  * limitations under the License.
 */
 
-library adaptify.example;
+library adaptify.strategy.conditional;
 
-import 'package:adaptify/adaptify.dart';
+import 'base_strategy.dart';
+import '../annotations.dart';
 
-import 'tasks/fibonacci.dart';
-
-main() {
-  DecisionUnit dc = new DecisionUnit(new ConditionalExpression());
-  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
-  print('Fibonacci should be executed ${decision}');
+class ConditionalExpression extends BaseStrategy {
+  @override
+  bool evaluate(Requirement req) {
+    // TODO: Add real algorithm
+    if (req.cpu == Consumption.high && req.memory == Consumption.high) {
+      return false;
+    }
+    return true;
+  }
 }

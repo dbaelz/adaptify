@@ -14,9 +14,23 @@
  * limitations under the License.
 */
 
-library adaptify.base;
+library adaptify.decision;
 
-/// Checks if you are awesome. Spoiler: you are.
-class Awesome {
-  bool get isAwesome => true;
+import 'annotations.dart';
+import 'strategy/base_strategy.dart';
+
+class DecisionUnit {
+  BaseStrategy strategy;
+
+  DecisionUnit(BaseStrategy this.strategy);
+
+  bool shouldExecutedLocal(Type classType) {
+    Requirement req = AnnotationParser.getRequirement(classType);
+    if (req == null) {
+      // TODO: Throw error?
+      return true;
+    }
+
+    return strategy.evaluate(req);
+  }
 }

@@ -14,14 +14,10 @@
  * limitations under the License.
 */
 
-library adaptify.example;
+library adaptify.strategy.base;
 
-import 'package:adaptify/adaptify.dart';
+import '../annotations.dart';
 
-import 'tasks/fibonacci.dart';
-
-main() {
-  DecisionUnit dc = new DecisionUnit(new ConditionalExpression());
-  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
-  print('Fibonacci should be executed ${decision}');
+abstract class BaseStrategy {
+  bool evaluate(Requirement req);
 }
