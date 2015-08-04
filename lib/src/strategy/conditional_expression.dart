@@ -21,11 +21,25 @@ import '../annotations.dart';
 
 class ConditionalExpression extends BaseStrategy {
   @override
-  bool evaluate(Requirement req) {
+  Execution evaluate(Requirement req) {
     // TODO: Add real algorithm
     if (req.cpu == Consumption.high && req.memory == Consumption.high) {
-      return false;
+      return Execution.remote;
     }
-    return true;
+    return Execution.local;
+  }
+}
+
+class ProfilingConditionalExpression extends BaseStrategy {
+  @override
+  Execution evaluate(Requirement req) {
+    if (req.timeCritical && req.bandwidth == Consumption.high) {
+      return Execution.local;
+    }
+
+    if ((req.cpu == Consumption.high && req.memory == Consumption.high) && req.bandwidth != Consumption.high) {
+      return Execution.remote;
+    }
+    return Execution.local;
   }
 }

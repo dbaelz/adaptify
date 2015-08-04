@@ -31,6 +31,6 @@ class DecisionUnit {
       return true;
     }
 
-    return strategy.evaluate(req);
+    return strategy.evaluate(req) == Execution.local ? true : false;
   }
 }

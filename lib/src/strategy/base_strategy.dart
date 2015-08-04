@@ -18,6 +18,10 @@ library adaptify.strategy.base;
 
 import '../annotations.dart';
 
+enum Execution {
+  local, remote
+}
+
 abstract class BaseStrategy {
-  bool evaluate(Requirement req);
+  Execution evaluate(Requirement req);
 }
