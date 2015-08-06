@@ -17,11 +17,16 @@
 library adaptify.strategy.base;
 
 import '../annotations.dart';
+import '../monitor/base_monitor.dart';
 
 enum Execution {
   local, remote
 }
 
 abstract class BaseStrategy {
+  BaseMonitor monitor;
+
+  BaseStrategy(BaseMonitor this.monitor);
+
   Execution evaluate(Requirement req);
 }

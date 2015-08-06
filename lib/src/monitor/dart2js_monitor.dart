@@ -14,14 +14,10 @@
  * limitations under the License.
 */
 
-library adaptify.example;
+library adaptify.monitor.dart2js;
 
-import 'package:adaptify/adaptify.dart';
+import 'base_monitor.dart';
 
-import 'tasks/fibonacci.dart';
+class Dart2JSMonitor extends BaseMonitor {
 
-main() {
-  DecisionUnit dc = new DecisionUnit(new ConditionalExpression());
-  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
-  print('Fibonacci should be executed ${decision}');
 }

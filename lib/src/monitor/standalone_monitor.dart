@@ -14,12 +14,10 @@
  * limitations under the License.
 */
 
-library adaptify;
+library adaptify.monitor.standalone;
 
-export 'src/annotations.dart';
-export 'src/decisionunit.dart';
+import 'base_monitor.dart';
 
-export 'src/monitor/base_monitor.dart';
+class StandaloneMonitor extends BaseMonitor {
 
-export 'src/strategy/base_strategy.dart';
-export 'src/strategy/conditional_expression.dart';
+}

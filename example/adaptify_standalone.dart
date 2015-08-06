@@ -14,12 +14,24 @@
  * limitations under the License.
 */
 
-library adaptify;
+library adaptify.example.standalone;
 
-export 'src/annotations.dart';
-export 'src/decisionunit.dart';
+import 'package:adaptify/adaptify.dart';
+import 'package:adaptify/standalone.dart';
 
-export 'src/monitor/base_monitor.dart';
+import 'tasks/fibonacci.dart';
 
-export 'src/strategy/base_strategy.dart';
-export 'src/strategy/conditional_expression.dart';
+main() {
+  DecisionUnit dc = new DecisionUnit(new ConditionalExpression(new StandaloneMonitor()));
+  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  print('Fibonacci should be executed ${decision}');
+}
+
+class AlwaysRemoteStrategy extends BaseStrategy {
+  AlwaysRemoteStrategy(monitor) : super(monitor);
+
+  @override
+  Execution evaluate(Requirement req) {
+    return Execution.remote;
+  }
+}

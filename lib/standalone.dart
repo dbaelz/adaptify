@@ -14,12 +14,7 @@
  * limitations under the License.
 */
 
-library adaptify;
+library adaptify.standalone;
 
-export 'src/annotations.dart';
-export 'src/decisionunit.dart';
 
-export 'src/monitor/base_monitor.dart';
-
-export 'src/strategy/base_strategy.dart';
-export 'src/strategy/conditional_expression.dart';
+export 'src/monitor/standalone_monitor.dart';

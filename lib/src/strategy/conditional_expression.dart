@@ -20,6 +20,8 @@ import 'base_strategy.dart';
 import '../annotations.dart';
 
 class ConditionalExpression extends BaseStrategy {
+  ConditionalExpression(monitor) : super(monitor);
+
   @override
   Execution evaluate(Requirement req) {
     // TODO: Add real algorithm
@@ -31,6 +33,8 @@ class ConditionalExpression extends BaseStrategy {
 }
 
 class ProfilingConditionalExpression extends BaseStrategy {
+  ProfilingConditionalExpression(monitor) : super(monitor);
+
   @override
   Execution evaluate(Requirement req) {
     if (req.timeCritical && req.bandwidth == Consumption.high) {

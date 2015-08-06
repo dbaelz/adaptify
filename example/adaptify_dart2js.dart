@@ -14,12 +14,15 @@
  * limitations under the License.
 */
 
-library adaptify;
+library adaptify.example.dart2js;
 
-export 'src/annotations.dart';
-export 'src/decisionunit.dart';
+import 'package:adaptify/adaptify.dart';
+import 'package:adaptify/dart2js.dart';
 
-export 'src/monitor/base_monitor.dart';
+import 'tasks/fibonacci.dart';
 
-export 'src/strategy/base_strategy.dart';
-export 'src/strategy/conditional_expression.dart';
+main() {
+  DecisionUnit dc = new DecisionUnit(new ConditionalExpression(new Dart2JSMonitor()));
+  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  print('Fibonacci should be executed ${decision}');
+}
