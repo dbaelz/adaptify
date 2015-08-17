@@ -16,10 +16,41 @@
 
 library adaptify.monitor;
 
-abstract class BaseMonitor {
+enum Capacity {
+  unavailable, low, medium, high
+}
 
+class Performance {
+  final Capacity memory;
+  final Capacity cpu;
+  final Capacity bandwidth;
+
+  const Performance({this.cpu: Capacity.unavailable, this.memory: Capacity.unavailable, this.bandwidth: Capacity.unavailable});
+}
+
+abstract class BaseMonitor {
+  Capacity measureCPU();
+  Capacity measureMemory();
+  Capacity measureBandwidth();
+
+  Performance retrievePerformanceInfo() {
+    return new Performance(cpu: measureCPU(), memory: measureMemory(), bandwidth: measureBandwidth());
+  }
 }
 
 class InactiveMonitor extends BaseMonitor {
+  @override
+  Capacity measureBandwidth() {
+    return Capacity.unavailable;
+  }
 
+  @override
+  Capacity measureCPU() {
+    return Capacity.unavailable;
+  }
+
+  @override
+  Capacity measureMemory() {
+    return Capacity.unavailable;
+  }
 }

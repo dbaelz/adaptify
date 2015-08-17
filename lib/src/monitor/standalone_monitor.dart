@@ -19,5 +19,18 @@ library adaptify.monitor.standalone;
 import 'base_monitor.dart';
 
 class StandaloneMonitor extends BaseMonitor {
+  @override
+  Capacity measureBandwidth() {
+    return Capacity.unavailable;
+  }
 
+  @override
+  Capacity measureCPU() {
+    return Capacity.unavailable;
+  }
+
+  @override
+  Capacity measureMemory() {
+    return Capacity.unavailable;
+  }
 }

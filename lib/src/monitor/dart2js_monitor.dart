@@ -19,5 +19,18 @@ library adaptify.monitor.dart2js;
 import 'base_monitor.dart';
 
 class Dart2JSMonitor extends BaseMonitor {
+  @override
+  Capacity measureBandwidth() {
+    return Capacity.unavailable;
+  }
 
+  @override
+  Capacity measureCPU() {
+    return Capacity.unavailable;
+  }
+
+  @override
+  Capacity measureMemory() {
+    return Capacity.unavailable;
+  }
 }
