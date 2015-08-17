@@ -24,12 +24,12 @@ enum Consumption {
 }
 
 class Requirement {
-  final Consumption memory;
   final Consumption cpu;
+  final Consumption memory;
   final Consumption bandwidth;
   final bool timeCritical;
 
-  const Requirement({this.memory: Consumption.low, this.cpu: Consumption.low, this.bandwidth: Consumption.low, this.timeCritical: false});
+  const Requirement({this.cpu: Consumption.low, this.memory: Consumption.low, this.bandwidth: Consumption.low, this.timeCritical: false});
 }
 
 class AnnotationParser {
