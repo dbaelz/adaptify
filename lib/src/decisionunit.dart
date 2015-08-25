@@ -27,8 +27,7 @@ class DecisionUnit {
   bool shouldExecutedLocal(Type classType) {
     Requirement req = AnnotationParser.getRequirement(classType);
     if (req == null) {
-      // TODO: Throw error?
-      return true;
+      req = new Requirement();
     }
 
     return strategy.evaluate(req) == Execution.local ? true : false;

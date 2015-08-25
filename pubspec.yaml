@@ -7,8 +7,8 @@ author: Daniel Bälz <me@dbaelz.de>
 environment:
   sdk: '>=1.0.0 <2.0.0'
 
-#dependencies:
-#  lib_name: any
+dependencies:
+  fuzzylogic: "^0.1.4"
 
 dev_dependencies:
   test: '>=0.12.0 <0.13.0'
