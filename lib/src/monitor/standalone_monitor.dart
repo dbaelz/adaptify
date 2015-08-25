@@ -20,17 +20,17 @@ import 'base_monitor.dart';
 
 class StandaloneMonitor extends BaseMonitor {
   @override
-  Capacity measureBandwidth() {
-    return Capacity.unavailable;
+  int measureBandwidth() {
+    return 0;
   }
 
   @override
-  Capacity measureCPU() {
-    return Capacity.unavailable;
+  int measureCPU() {
+    return 0;
   }
 
   @override
-  Capacity measureMemory() {
-    return Capacity.unavailable;
+  int measureMemory() {
+    return 0;
   }
 }

@@ -28,29 +28,37 @@ class Performance {
   const Performance({this.cpu: Capacity.unavailable, this.memory: Capacity.unavailable, this.bandwidth: Capacity.unavailable});
 }
 
-abstract class BaseMonitor {
-  Capacity measureCPU();
-  Capacity measureMemory();
-  Capacity measureBandwidth();
+class Measurement {
+  final int memory;
+  final int cpu;
+  final int bandwidth;
 
-  Performance retrievePerformanceInfo() {
-    return new Performance(cpu: measureCPU(), memory: measureMemory(), bandwidth: measureBandwidth());
+  const Measurement({this.cpu: 0, this.memory: 0, this.bandwidth: 0});
+}
+
+abstract class BaseMonitor {
+  int measureCPU();
+  int measureMemory();
+  int measureBandwidth();
+
+  Measurement retrieveMeasurement() {
+    return new Measurement(cpu: measureCPU(), memory: measureMemory(), bandwidth: measureBandwidth());
   }
 }
 
 class InactiveMonitor extends BaseMonitor {
   @override
-  Capacity measureBandwidth() {
-    return Capacity.unavailable;
+  int measureBandwidth() {
+    return 0;
   }
 
   @override
-  Capacity measureCPU() {
-    return Capacity.unavailable;
+  int measureCPU() {
+    return 0;
   }
 
   @override
-  Capacity measureMemory() {
-    return Capacity.unavailable;
+  int measureMemory() {
+    return 0;
   }
 }
