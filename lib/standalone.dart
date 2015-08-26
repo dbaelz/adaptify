@@ -16,5 +16,4 @@
 
 library adaptify.standalone;
 
-
-export 'src/monitor/standalone_monitor.dart';
+export 'src/monitor/systemtools_monitor.dart';

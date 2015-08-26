@@ -16,19 +16,22 @@
 
 library adaptify.strategy.conditional;
 
+import 'dart:async';
+
 import 'base_strategy.dart';
 import '../annotations.dart';
+import '../monitor/base_monitor.dart';
 
 class ConditionalExpression extends BaseStrategy {
   ConditionalExpression(monitor) : super(monitor);
 
   @override
-  Execution evaluate(Requirement req) {
-    // TODO: Add real algorithm
+  Future<Execution> evaluate(Requirement req) async {
+    Measurement measurement = await monitor.retrieveMeasurement();
     if (req.cpu == Consumption.high && req.memory == Consumption.high) {
-      return Execution.remote;
+      return (new Completer()..complete(Execution.remote)).future;
     }
-    return Execution.local;
+    return (new Completer()..complete(Execution.local)).future;
   }
 }
 
@@ -36,14 +39,14 @@ class ProfilingConditionalExpression extends BaseStrategy {
   ProfilingConditionalExpression(monitor) : super(monitor);
 
   @override
-  Execution evaluate(Requirement req) {
+  Future<Execution> evaluate(Requirement req) {
     if (req.timeCritical && req.bandwidth == Consumption.high) {
-      return Execution.local;
+      return (new Completer()..complete(Execution.local)).future;
     }
 
     if ((req.cpu == Consumption.high && req.memory == Consumption.high) && req.bandwidth != Consumption.high) {
-      return Execution.remote;
+      return (new Completer()..complete(Execution.remote)).future;
     }
-    return Execution.local;
+    return (new Completer()..complete(Execution.local)).future;
   }
 }
