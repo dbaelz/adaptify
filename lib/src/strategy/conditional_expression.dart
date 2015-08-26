@@ -29,9 +29,9 @@ class ConditionalExpression extends BaseStrategy {
   Future<Execution> evaluate(Requirement req) async {
     Measurement measurement = await monitor.retrieveMeasurement();
     if (req.cpu == Consumption.high && req.memory == Consumption.high) {
-      return (new Completer()..complete(Execution.remote)).future;
+      return Execution.remote;
     }
-    return (new Completer()..complete(Execution.local)).future;
+    return Execution.local;
   }
 }
 
