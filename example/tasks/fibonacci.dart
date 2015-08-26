@@ -18,7 +18,7 @@ library adaptify.example.tasks.fibonacci;
 
 import 'package:adaptify/adaptify.dart';
 
-@Requirement(cpu: Consumption.medium)
+@Requirement(cpu: Consumption.medium, memory: Consumption.medium)
 class Fibonacci {
   static int calculate(int n) {
     if (n == 0 || n == 1) {

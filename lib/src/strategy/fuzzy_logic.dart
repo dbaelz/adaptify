@@ -37,42 +37,34 @@ class FuzzyLogic extends BaseStrategy {
     var decision = new _FuzzyDecision();
 
     FuzzyRuleBase ruleBase = new FuzzyRuleBase();
-    ruleBase
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.slow & memory.low), decision.local))
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.slow & memory.medium), decision.local))
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.slow & memory.high), decision.local))
 
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.medium & memory.low), decision.local))
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.medium & memory.medium), decision.local))
-      ..addRule(new FuzzyRule((bandwidth.low & cpu.medium & memory.high), decision.local))
-
-      ..addRule(new FuzzyRule((bandwidth.medium & cpu.slow & memory.low), decision.remote))
-      ..addRule(new FuzzyRule((bandwidth.medium & cpu.medium & memory.low), decision.remote))
-      ..addRule(new FuzzyRule((bandwidth.medium & cpu.fast & memory.low), decision.remote))
-
-      ..addRule(new FuzzyRule((bandwidth.high & cpu.slow & memory.low), decision.remote))
-      ..addRule(new FuzzyRule((bandwidth.high & cpu.medium & memory.low), decision.remote))
-      ..addRule(new FuzzyRule((bandwidth.high & cpu.slow & memory.medium), decision.remote))
-
-      ..addRule(new FuzzyRule((bandwidth.medium & cpu.medium & memory.medium), decision.local));
-
-    if ((req.bandwidth == Consumption.high) || (req.bandwidth == Consumption.medium)) {
+    if (req.cpu == Consumption.high) {
+      ruleBase.addRule(new FuzzyRule((cpu.slow | cpu.medium), decision.remote));
+    } else {
       ruleBase
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.slow & memory.low), decision.local))
-        ..addRule(new FuzzyRule((bandwidth.high & cpu.slow & memory.low), decision.remote));
+        ..addRule(new FuzzyRule(cpu.fast, decision.local))
+        ..addRule(new FuzzyRule(cpu.medium, decision.remote));
     }
-    if ((req.cpu == Consumption.high) || (req.cpu == Consumption.medium)) {
+
+    if (req.memory == Consumption.high) {
+      ruleBase.addRule(new FuzzyRule((memory.low | memory.medium), decision.remote));
+    } else if (req.memory == Consumption.medium) {
       ruleBase
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.slow & memory.low), decision.remote))
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.medium & memory.low), decision.local))
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.fast & memory.medium), decision.local));
+        ..addRule(new FuzzyRule((memory.low), decision.remote))
+        ..addRule(new FuzzyRule((memory.medium), decision.local));
     }
-    if ((req.memory == Consumption.high) || (req.memory == Consumption.medium)) {
+
+    if (req.bandwidth == Consumption.high) {
       ruleBase
-        ..addRule(new FuzzyRule((bandwidth.low & cpu.slow & memory.medium), decision.local))
-        ..addRule(new FuzzyRule((bandwidth.low & cpu.slow & memory.high), decision.local))
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.slow & memory.medium), decision.remote))
-        ..addRule(new FuzzyRule((bandwidth.medium & cpu.slow & memory.high), decision.local));
+        ..addRule(new FuzzyRule((bandwidth.low | bandwidth.medium), decision.local))
+        ..addRule(new FuzzyRule((cpu.slow & memory.low), decision.remote));
+    }
+
+    if ((req.cpu == Consumption.medium) || (req.memory == Consumption.medium)) {
+      ruleBase.addRule(new FuzzyRule(((cpu.medium | cpu.fast) & (memory.high)), decision.local));
+    }
+    if ((req.cpu != Consumption.low) && (req.memory != Consumption.low) && (req.bandwidth == Consumption.low)) {
+      ruleBase.addRule(new FuzzyRule((bandwidth.medium | bandwidth.high), decision.remote));
     }
 
     var output = decision.createOutputPlaceholder();
@@ -81,30 +73,22 @@ class FuzzyLogic extends BaseStrategy {
         inputs: [bandwidth.assign(measurement.bandwidth), cpu.assign(measurement.cpu), memory.assign(measurement.memory)],
         outputs: [output]);
 
-    if ((output.crispValue == null) || (output.crispValue > 50 && output.confidence > 0.60)) {
+    if (output.crispValue == null) {
       return Execution.local;
-    } else {
-      return Execution.remote;
     }
-  }
-}
 
-class _FuzzyBandwidthDown extends FuzzyVariable<int> {
-  var low = new FuzzySet.LeftShoulder(0, 192, 384);
-  var medium = new FuzzySet.Trapezoid(192, 256, 448, 512);
-  var high = new FuzzySet.Trapezoid(384, 512, 768, 896);
-  var superior = new FuzzySet.RightShoulder(768, 896, 14 * 1024);
-
-  _FuzzyBandwidthDown() {
-    sets = [low, medium, high, superior];
-    init();
+    var decisionValue = output.confidence * output.crispValue;
+    if (decisionValue > 40) {
+      return Execution.local;
+    }
+    return Execution.remote;
   }
 }
 
 class _FuzzyBandwidthUp extends FuzzyVariable<int> {
   var low = new FuzzySet.LeftShoulder(0, 64, 96);
   var medium = new FuzzySet.Trapezoid(64, 128, 320, 512);
-  var high = new FuzzySet.RightShoulder(384, 512, 5120);
+  var high = new FuzzySet.RightShoulder(384, 512, 2048);
 
   _FuzzyBandwidthUp() {
     sets = [low, medium, high];
@@ -124,8 +108,8 @@ class _FuzzyCPU extends FuzzyVariable<int> {
 }
 
 class _FuzzyMemory extends FuzzyVariable<int> {
-  var low = new FuzzySet.LeftShoulder(0, 1024, 1536);
-  var medium = new FuzzySet.Trapezoid(1024, 1536, 2048, 2560);
+  var low = new FuzzySet.LeftShoulder(0, 512, 768);
+  var medium = new FuzzySet.Trapezoid(512, 1024, 2048, 2560);
   var high = new FuzzySet.RightShoulder(2048, 2560, 3072);
 
   _FuzzyMemory() {
@@ -135,8 +119,8 @@ class _FuzzyMemory extends FuzzyVariable<int> {
 }
 
 class _FuzzyDecision extends FuzzyVariable<int> {
-  var local = new FuzzySet.LeftShoulder(0, 30, 60);
-  var remote = new FuzzySet.RightShoulder(40, 60, 100);
+  var remote = new FuzzySet.LeftShoulder(0, 30, 60);
+  var local = new FuzzySet.RightShoulder(40, 60, 100);
 
   _FuzzyDecision() {
     sets = [local, remote];

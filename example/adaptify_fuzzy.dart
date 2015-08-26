@@ -32,7 +32,7 @@ main() async {
 class RandomFuzzyMonitor extends BaseMonitor {
   @override
   Future<int> measureBandwidth() {
-    int value = new Random().nextInt(5120);
+    int value = new Random().nextInt(2048);
     print('Bandwidth: $value');
     return (new Completer()..complete(value)).future;
   }
