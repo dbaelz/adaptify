@@ -16,6 +16,8 @@
 
 library adaptify.strategy.base;
 
+import 'dart:async';
+
 import '../annotations.dart';
 import '../monitor/base_monitor.dart';
 
@@ -28,5 +30,5 @@ abstract class BaseStrategy {
 
   BaseStrategy(BaseMonitor this.monitor);
 
-  Execution evaluate(Requirement req);
+  Future<Execution> evaluate(Requirement req);
 }

@@ -16,6 +16,8 @@
 
 library adaptify.monitor;
 
+import 'dart:async';
+
 enum Capacity {
   unavailable, low, medium, high
 }
@@ -37,28 +39,28 @@ class Measurement {
 }
 
 abstract class BaseMonitor {
-  int measureCPU();
-  int measureMemory();
-  int measureBandwidth();
+  Future<int> measureCPU();
+  Future<int> measureMemory();
+  Future<int> measureBandwidth();
 
-  Measurement retrieveMeasurement() {
-    return new Measurement(cpu: measureCPU(), memory: measureMemory(), bandwidth: measureBandwidth());
+  Future<Measurement> retrieveMeasurement() async {
+    return new Measurement(cpu: await measureCPU(), memory: await measureMemory(), bandwidth: await measureBandwidth());
   }
 }
 
 class InactiveMonitor extends BaseMonitor {
   @override
-  int measureBandwidth() {
-    return 0;
+  Future<int> measureBandwidth() {
+    return (new Completer()..complete(0)).future;
   }
 
   @override
-  int measureCPU() {
-    return 0;
+  Future<int> measureCPU() {
+    return (new Completer()..complete(0)).future;
   }
 
   @override
-  int measureMemory() {
-    return 0;
+  Future<int> measureMemory() {
+    return (new Completer()..complete(0)).future;
   }
 }

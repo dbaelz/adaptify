@@ -16,6 +16,8 @@
 
 library adaptify.decision;
 
+import 'dart:async';
+
 import 'annotations.dart';
 import 'strategy/base_strategy.dart';
 
@@ -24,12 +26,12 @@ class DecisionUnit {
 
   DecisionUnit(BaseStrategy this.strategy);
 
-  bool shouldExecutedLocal(Type classType) {
+  Future<bool> shouldExecutedLocal(Type classType) async {
     Requirement req = AnnotationParser.getRequirement(classType);
     if (req == null) {
       req = new Requirement();
     }
 
-    return strategy.evaluate(req) == Execution.local ? true : false;
+    return await strategy.evaluate(req) == Execution.local ? true : false;
   }
 }

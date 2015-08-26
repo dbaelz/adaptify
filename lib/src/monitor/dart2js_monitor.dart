@@ -16,21 +16,23 @@
 
 library adaptify.monitor.dart2js;
 
+import 'dart:async';
+
 import 'base_monitor.dart';
 
 class Dart2JSMonitor extends BaseMonitor {
   @override
-  int measureBandwidth() {
-    return 0;
+  Future<int> measureBandwidth() {
+    return (new Completer()..complete(0)).future;
   }
 
   @override
-  int measureCPU() {
-    return 0;
+  Future<int> measureCPU() {
+    return (new Completer()..complete(0)).future;
   }
 
   @override
-  int measureMemory() {
-    return 0;
+  Future<int> measureMemory() {
+    return (new Completer()..complete(0)).future;
   }
 }

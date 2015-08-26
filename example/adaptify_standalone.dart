@@ -21,17 +21,8 @@ import 'package:adaptify/standalone.dart';
 
 import 'tasks/fibonacci.dart';
 
-main() {
+main() async {
   DecisionUnit dc = new DecisionUnit(new ConditionalExpression(new StandaloneMonitor()));
-  String decision = dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  String decision = await dc.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
   print('Fibonacci should be executed ${decision}');
-}
-
-class AlwaysRemoteStrategy extends BaseStrategy {
-  AlwaysRemoteStrategy(monitor) : super(monitor);
-
-  @override
-  Execution evaluate(Requirement req) {
-    return Execution.remote;
-  }
 }

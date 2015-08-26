@@ -16,6 +16,8 @@
 
 library adaptify.strategy.fuzzy;
 
+import 'dart:async';
+
 import 'package:fuzzylogic/fuzzylogic.dart';
 
 import 'base_strategy.dart';
@@ -26,7 +28,9 @@ class FuzzyLogic extends BaseStrategy {
   FuzzyLogic(monitor) : super(monitor);
 
   @override
-  Execution evaluate(Requirement req) {
+  Future<Execution> evaluate(Requirement req) async {
+    Measurement measurement = await monitor.retrieveMeasurement();
+
     var bandwidth = new _FuzzyBandwidthUp();
     var cpu = new _FuzzyCPU();
     var memory = new _FuzzyMemory();
@@ -72,7 +76,7 @@ class FuzzyLogic extends BaseStrategy {
     }
 
     var output = decision.createOutputPlaceholder();
-    Measurement measurement = monitor.retrieveMeasurement();
+
     ruleBase.resolve(
         inputs: [bandwidth.assign(measurement.bandwidth), cpu.assign(measurement.cpu), memory.assign(measurement.memory)],
         outputs: [output]);
