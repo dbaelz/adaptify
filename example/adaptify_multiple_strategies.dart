@@ -14,15 +14,21 @@
  * limitations under the License.
 */
 
-library adaptify.example.dart2js;
+library adaptify.example.multiple_strategies;
 
 import 'package:adaptify/adaptify.dart';
-import 'package:adaptify/dart2js.dart';
+import 'package:adaptify/standalone.dart';
 
+import 'adaptify_fuzzy.dart';
 import 'tasks/fibonacci.dart';
 
 main() async {
-  ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new ConditionalExpression(new Dart2JSMonitor())]);
-  String decision = await decisionUnit.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
-  print('Fibonacci should be executed ${decision}');
+  List<BaseStrategy> strategies = new List<BaseStrategy>()
+    ..add(new FuzzyLogic(new RandomFuzzyMonitor()))
+    ..add(new FuzzyLogic(new RandomFuzzyMonitor()))
+    ..add(new ConditionalExpression(new SystemToolsMonitor()));
+  ConsensusDecisionUnit decisionUnitMultiple = new ConsensusDecisionUnit(strategies);
+
+  String decisionMultiple = await decisionUnitMultiple.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  print('Fibonacci should be executed ${decisionMultiple}');
 }

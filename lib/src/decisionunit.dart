@@ -21,17 +21,40 @@ import 'dart:async';
 import 'annotations.dart';
 import 'strategy/base_strategy.dart';
 
-class DecisionUnit {
-  BaseStrategy strategy;
+abstract class BaseDecisionUnit {
+  List<BaseStrategy> strategies;
 
-  DecisionUnit(BaseStrategy this.strategy);
+  BaseDecisionUnit(List<BaseStrategy> this.strategies);
 
+  Future<bool> shouldExecutedLocal(Type classType);
+}
+
+class ConsensusDecisionUnit extends BaseDecisionUnit {
+  ConsensusDecisionUnit(List<BaseStrategy> strategies) : super(strategies);
+
+  @override
   Future<bool> shouldExecutedLocal(Type classType) async {
     Requirement req = AnnotationParser.getRequirement(classType);
     if (req == null) {
       req = new Requirement();
     }
 
-    return await strategy.evaluate(req) == Execution.local ? true : false;
+    if (strategies.isNotEmpty) {
+      int countLocal = 0;
+      int countRemote = 0;
+      for (BaseStrategy strategy in strategies) {
+        Execution decision = await strategy.evaluate(req);
+        if (decision == Execution.local){
+          countLocal++;
+        } else {
+          countRemote++;
+        }
+      }
+      if (countLocal >= countRemote) {
+        return true;
+      }
+      return false;
+    }
+    return true;
   }
 }
