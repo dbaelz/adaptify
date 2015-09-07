@@ -22,5 +22,5 @@ export 'src/decisionunit.dart';
 export 'src/monitor/base_monitor.dart';
 
 export 'src/strategy/base_strategy.dart';
-export 'src/strategy/conditional_expression.dart';
+export 'src/strategy/conditional_strategy.dart';
 export 'src/strategy/fuzzy_logic.dart';

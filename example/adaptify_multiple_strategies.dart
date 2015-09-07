@@ -26,7 +26,7 @@ main() async {
   List<BaseStrategy> strategies = new List<BaseStrategy>()
     ..add(new FuzzyLogic(new RandomFuzzyMonitor()))
     ..add(new FuzzyLogic(new RandomFuzzyMonitor()))
-    ..add(new ConditionalExpression(new SystemToolsMonitor()));
+    ..add(new ConditionalExpStrategy(new SystemToolsMonitor()));
   ConsensusDecisionUnit decisionUnitMultiple = new ConsensusDecisionUnit(strategies);
 
   String decisionMultiple = await decisionUnitMultiple.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';

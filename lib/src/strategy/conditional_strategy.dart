@@ -22,8 +22,8 @@ import 'base_strategy.dart';
 import '../annotations.dart';
 import '../monitor/base_monitor.dart';
 
-class ConditionalExpression extends BaseStrategy {
-  ConditionalExpression(monitor) : super(monitor);
+class ConditionalExpStrategy extends BaseStrategy {
+  ConditionalExpStrategy(monitor) : super(monitor);
 
   @override
   Future<Execution> evaluate(Requirement req) async {
@@ -35,8 +35,8 @@ class ConditionalExpression extends BaseStrategy {
   }
 }
 
-class ProfilingConditionalExpression extends BaseStrategy {
-  ProfilingConditionalExpression(monitor) : super(monitor);
+class ProfilingOnlyStrategy extends BaseStrategy {
+  ProfilingOnlyStrategy(monitor) : super(monitor);
 
   @override
   Future<Execution> evaluate(Requirement req) {
