@@ -19,13 +19,13 @@ library adaptify.example.multiple_strategies;
 import 'package:adaptify/adaptify.dart';
 import 'package:adaptify/standalone.dart';
 
-import 'adaptify_fuzzy.dart';
+import 'monitor/random_monitor.dart';
 import 'tasks/fibonacci.dart';
 
 main() async {
   List<BaseStrategy> strategies = new List<BaseStrategy>()
-    ..add(new FuzzyLogicStrategy(new RandomFuzzyMonitor()))
-    ..add(new FuzzyLogicStrategy(new RandomFuzzyMonitor()))
+    ..add(new FuzzyLogicStrategy(new RandomMonitor()))
+    ..add(new FuzzyLogicStrategy(new RandomMonitor()))
     ..add(new ConditionalExpStrategy(new SystemToolsMonitor()));
   ConsensusDecisionUnit decisionUnitMultiple = new ConsensusDecisionUnit(strategies);
 

@@ -16,38 +16,13 @@
 
 library adaptify.example.fuzzy;
 
-import 'dart:async';
-import 'dart:math';
-
 import 'package:adaptify/adaptify.dart';
 
+import 'monitor/random_monitor.dart';
 import 'tasks/fibonacci.dart';
 
 main() async {
-  ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new FuzzyLogicStrategy(new RandomFuzzyMonitor())]);
+  ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new FuzzyLogicStrategy(new RandomMonitor())]);
   String decision = await decisionUnit.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
   print('Fibonacci should be executed ${decision}');
-}
-
-class RandomFuzzyMonitor extends BaseMonitor {
-  @override
-  Future<int> measureBandwidth() {
-    int value = new Random().nextInt(2048);
-    print('Bandwidth: $value');
-    return (new Completer()..complete(value)).future;
-  }
-
-  @override
-  Future<int> measureCPU() {
-    int value = new Random().nextInt(4096);
-    print('CPU: $value');
-    return (new Completer()..complete(value)).future;
-  }
-
-  @override
-  Future<int> measureMemory() {
-    int value = new Random().nextInt(3072);
-    print('Memory: $value');
-    return (new Completer()..complete(value)).future;
-  }
 }
