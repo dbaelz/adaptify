@@ -14,6 +14,8 @@
  * limitations under the License.
 */
 
+/// The standalone library includes all features for the standalone vm.
+/// It's imported when the application should be executed on the standalone virtual machine.
 library adaptify.standalone;
 
 export 'src/monitor/systemtools_monitor.dart';

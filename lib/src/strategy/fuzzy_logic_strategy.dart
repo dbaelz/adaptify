@@ -24,7 +24,11 @@ import 'base_strategy.dart';
 import '../annotations.dart';
 import '../monitor/base_monitor.dart';
 
+/// An adaption strategy based on fuzzy logic.
+///
+/// Uses the [Fuzzy Logic package](https://pub.dartlang.org/packages/fuzzylogic) for the implementation.
 class FuzzyLogicStrategy extends BaseStrategy {
+  /// Creates a strategy with the given [monitor] implementation.
   FuzzyLogicStrategy(monitor) : super(monitor);
 
   @override

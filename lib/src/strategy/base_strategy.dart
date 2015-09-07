@@ -25,10 +25,16 @@ enum Execution {
   local, remote
 }
 
+/// The abstract strategy for adaption decisions.
 abstract class BaseStrategy {
   BaseMonitor monitor;
 
+  /// Creates a strategy with the given [monitor] implementation.
   BaseStrategy(BaseMonitor this.monitor);
 
+  /// Returns a [:Future<Execution>:] that completes after the evaluation of the [req] and [monitor] is done.
+  ///
+  /// This method contains the adaption logic for the implemented strategy.
+  /// Usually, the requirements are compared with the measurements of the monitor.
   Future<Execution> evaluate(Requirement req);
 }

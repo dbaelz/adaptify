@@ -18,10 +18,12 @@ library adaptify.performance_classifier;
 
 import 'monitor/base_monitor.dart';
 
+/// Capacity of a resource.
 enum Capacity {
   unavailable, low, medium, high
 }
 
+/// Performance (in [Capacity] classification) of a task.
 class Performance {
   final Capacity memory;
   final Capacity cpu;
@@ -30,10 +32,13 @@ class Performance {
   const Performance(this.bandwidth, this.cpu, this.memory);
 }
 
+/// Abstract classifier for classification of [Measurement] information into a [Performance] class.
 abstract class BaseClassifier {
+  /// Classifies the [measurement] into a [Performance] object.
   Performance classifyMeasurement(Measurement measurement);
 }
 
+/// Default classifier, that classifies the [measurement] with given limits.
 class DefaultClassifier extends BaseClassifier {
   @override
   Performance classifyMeasurement(Measurement measurement) {

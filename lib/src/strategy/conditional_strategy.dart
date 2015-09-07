@@ -23,7 +23,9 @@ import '../annotations.dart';
 import '../performance_classifier.dart';
 import '../monitor/base_monitor.dart';
 
+/// An adaption strategy based on conditional expressions.
 class ConditionalExpStrategy extends BaseStrategy {
+  /// Creates a strategy with the given [monitor] implementation.
   ConditionalExpStrategy(monitor) : super(monitor);
 
   @override
@@ -58,7 +60,9 @@ class ConditionalExpStrategy extends BaseStrategy {
   }
 }
 
+/// An adaption strategy, that uses only the [Requirement] information and ignores the [BaseMonitor].
 class ProfilingOnlyStrategy extends BaseStrategy {
+  /// Creates the strategy, the [monitor] implementation is ignored in the evaluation.
   ProfilingOnlyStrategy(monitor) : super(monitor);
 
   @override

@@ -20,6 +20,9 @@ import 'dart:async';
 
 import 'base_monitor.dart';
 
+/// Provides resource measurements for the browser.
+///
+/// This monitor currently returns 0 for all measurements.
 class Dart2JSMonitor extends BaseMonitor {
   @override
   Future<int> measureBandwidth() {

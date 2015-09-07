@@ -14,6 +14,8 @@
  * limitations under the License.
 */
 
+/// The adaptify library includes all common classes of the adaptify framework.
+/// It's usually imported for custom implementations extending the abstract base classes.
 library adaptify;
 
 export 'src/annotations.dart';

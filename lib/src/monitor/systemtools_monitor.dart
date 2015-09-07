@@ -21,7 +21,12 @@ import 'dart:io';
 
 import 'base_monitor.dart';
 
+/// Provides resource measurements with operating system tools.
+///
+/// Supports Linux, Mac OS X and Windows.
 class SystemToolsMonitor extends BaseMonitor {
+
+  /// Not implemented yet, therefore returns 0 for all platforms.
   @override
   Future<int> measureBandwidth() {
     return (new Completer()..complete(0)).future;

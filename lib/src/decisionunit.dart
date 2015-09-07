@@ -21,17 +21,30 @@ import 'dart:async';
 import 'annotations.dart';
 import 'strategy/base_strategy.dart';
 
+/// The abstract decision unit.
 abstract class BaseDecisionUnit {
+  /// List of all the strategies that should be evaluated for decision making.
   List<BaseStrategy> strategies;
 
+  /// Creates a decision unit with the given list of [strategies].
   BaseDecisionUnit(List<BaseStrategy> this.strategies);
 
+  /// Returns true if the task should be executed local, otherwise false.
+  ///
+  /// This method usually evaluates all [strategies] for the decision.
   Future<bool> shouldExecutedLocal(Type classType);
 }
 
+/// The decision unit that evaluates all strategies and performs a consensus decision.
 class ConsensusDecisionUnit extends BaseDecisionUnit {
+  /// Creates a decision unit with the given list of [strategies].
   ConsensusDecisionUnit(List<BaseStrategy> strategies) : super(strategies);
 
+
+  /// Returns true if the task should be executed local, otherwise false.
+  ///
+  /// Performs a consensus decision of the [strategies].
+  /// In case of a tie, it returns true.
   @override
   Future<bool> shouldExecutedLocal(Type classType) async {
     Requirement req = AnnotationParser.getRequirement(classType);

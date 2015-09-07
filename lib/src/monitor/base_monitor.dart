@@ -18,6 +18,7 @@ library adaptify.monitor;
 
 import 'dart:async';
 
+/// Accumulates the results of measurement.
 class Measurement {
   final int memory;
   final int cpu;
@@ -26,16 +27,35 @@ class Measurement {
   const Measurement({this.cpu: 0, this.memory: 0, this.bandwidth: 0});
 }
 
+/// The abstract monitor class for measuring resources.
+///
+/// Resource information are either collected separate by the [measureCPU], [measureMemory] and [measureBandwidth] methods
+/// or together with [retrieveMeasurement].
 abstract class BaseMonitor {
+
+  /// Returns a [:Future<int>:] that completes with the maximum frequency of a CPU core in MHz.
+  ///
+  /// Returns 0 if the value could not be determined.
   Future<int> measureCPU();
+
+  /// Returns a [:Future<int>:] that completes with the free or maximum available memory in MB.
+  ///
+  /// Returns 0 if the value could not be determined.
   Future<int> measureMemory();
+
+  /// Returns a [:Future<int>:] that completes with the maximum bandwidth in kbit/s.
+  ///
+  /// Returns 0 if the value could not be determined.
   Future<int> measureBandwidth();
 
+
+  /// Returns a [:Future<Measurement>:] that completes with a [:Measurement:] object containing CPU, memory and bandwidth measurement.
   Future<Measurement> retrieveMeasurement() async {
     return new Measurement(cpu: await measureCPU(), memory: await measureMemory(), bandwidth: await measureBandwidth());
   }
 }
 
+/// Monitor that returns 0 for all measurements.
 class InactiveMonitor extends BaseMonitor {
   @override
   Future<int> measureBandwidth() {
