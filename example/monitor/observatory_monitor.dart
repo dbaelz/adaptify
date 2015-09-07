@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-library adaptify.monitor.observatory;
+library adaptify.example.monitor.observatory;
 
 import 'dart:async';
 import 'dart:convert';
