@@ -24,8 +24,8 @@ import 'base_strategy.dart';
 import '../annotations.dart';
 import '../monitor/base_monitor.dart';
 
-class FuzzyLogic extends BaseStrategy {
-  FuzzyLogic(monitor) : super(monitor);
+class FuzzyLogicStrategy extends BaseStrategy {
+  FuzzyLogicStrategy(monitor) : super(monitor);
 
   @override
   Future<Execution> evaluate(Requirement req) async {

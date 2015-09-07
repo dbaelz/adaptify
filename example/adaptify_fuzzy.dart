@@ -24,7 +24,7 @@ import 'package:adaptify/adaptify.dart';
 import 'tasks/fibonacci.dart';
 
 main() async {
-  ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new FuzzyLogic(new RandomFuzzyMonitor())]);
+  ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new FuzzyLogicStrategy(new RandomFuzzyMonitor())]);
   String decision = await decisionUnit.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
   print('Fibonacci should be executed ${decision}');
 }
