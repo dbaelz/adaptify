@@ -20,6 +20,7 @@ import 'dart:async';
 
 import 'base_strategy.dart';
 import '../annotations.dart';
+import '../performance_classifier.dart';
 import '../monitor/base_monitor.dart';
 
 class ConditionalExpStrategy extends BaseStrategy {
@@ -28,8 +29,30 @@ class ConditionalExpStrategy extends BaseStrategy {
   @override
   Future<Execution> evaluate(Requirement req) async {
     Measurement measurement = await monitor.retrieveMeasurement();
-    if (req.cpu == Consumption.high && req.memory == Consumption.high) {
+    Performance perf = new DefaultClassifier().classifyMeasurement(measurement);
+
+    if (req.timeCritical && (perf.bandwidth == Capacity.medium || perf.bandwidth == Capacity.high)) {
       return Execution.remote;
+    }
+
+    Execution cpuExec = Execution.local;
+    if ((req.cpu == Consumption.medium || req.cpu == Consumption.high) && perf.cpu == Capacity.low) {
+      cpuExec = Execution.remote;
+    }
+
+    Execution memoryExec = Execution.local;
+    if(req.memory != Consumption.low && (perf.memory == Capacity.medium || perf.memory == Capacity.high)) {
+      memoryExec = Execution.remote;
+    } else if (req.memory == Consumption.medium && perf.memory == Capacity.low) {
+      memoryExec = Execution.remote;
+    } else if (req.memory == Consumption.high && (perf.memory == Capacity.low || perf.memory == Capacity.medium)) {
+      memoryExec = Execution.remote;
+    }
+
+    if (cpuExec == Execution.remote || memoryExec == Execution.remote) {
+      if (perf.bandwidth == Capacity.medium || perf.bandwidth == Capacity.high) {
+        return Execution.remote;
+      }
     }
     return Execution.local;
   }
@@ -41,12 +64,15 @@ class ProfilingOnlyStrategy extends BaseStrategy {
   @override
   Future<Execution> evaluate(Requirement req) {
     if (req.timeCritical && req.bandwidth == Consumption.high) {
-      return (new Completer()..complete(Execution.local)).future;
+      return (new Completer()
+        ..complete(Execution.local)).future;
     }
 
     if ((req.cpu == Consumption.high && req.memory == Consumption.high) && req.bandwidth != Consumption.high) {
-      return (new Completer()..complete(Execution.remote)).future;
+      return (new Completer()
+        ..complete(Execution.remote)).future;
     }
-    return (new Completer()..complete(Execution.local)).future;
+    return (new Completer()
+      ..complete(Execution.local)).future;
   }
 }

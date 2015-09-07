@@ -25,8 +25,8 @@ import 'tasks/fibonacci.dart';
 main() async {
   List<BaseStrategy> strategies = new List<BaseStrategy>()
     ..add(new FuzzyLogicStrategy(new RandomMonitor()))
-    ..add(new FuzzyLogicStrategy(new RandomMonitor()))
-    ..add(new ConditionalExpStrategy(new SystemToolsMonitor()));
+    ..add(new ConditionalExpStrategy(new SystemToolsMonitor()))
+    ..add(new ConditionalExpStrategy(new RandomMonitor()));
   ConsensusDecisionUnit decisionUnitMultiple = new ConsensusDecisionUnit(strategies);
 
   String decisionMultiple = await decisionUnitMultiple.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
