@@ -18,18 +18,6 @@ library adaptify.monitor;
 
 import 'dart:async';
 
-enum Capacity {
-  unavailable, low, medium, high
-}
-
-class Performance {
-  final Capacity memory;
-  final Capacity cpu;
-  final Capacity bandwidth;
-
-  const Performance({this.cpu: Capacity.unavailable, this.memory: Capacity.unavailable, this.bandwidth: Capacity.unavailable});
-}
-
 class Measurement {
   final int memory;
   final int cpu;

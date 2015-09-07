@@ -18,6 +18,7 @@ library adaptify;
 
 export 'src/annotations.dart';
 export 'src/decisionunit.dart';
+export 'src/performance_classifier.dart';
 
 export 'src/monitor/base_monitor.dart';
 
