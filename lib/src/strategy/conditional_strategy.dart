@@ -43,7 +43,7 @@ class ConditionalExpStrategy extends BaseStrategy {
     }
 
     Execution memoryExec = Execution.local;
-    if(req.memory != Consumption.low && (perf.memory == Capacity.medium || perf.memory == Capacity.high)) {
+    if (req.memory != Consumption.low && (perf.memory == Capacity.medium || perf.memory == Capacity.high)) {
       memoryExec = Execution.remote;
     } else if (req.memory == Consumption.medium && perf.memory == Capacity.low) {
       memoryExec = Execution.remote;
@@ -67,16 +67,29 @@ class ProfilingOnlyStrategy extends BaseStrategy {
 
   @override
   Future<Execution> evaluate(Requirement req) {
-    if (req.timeCritical && req.bandwidth == Consumption.high) {
-      return (new Completer()
-        ..complete(Execution.local)).future;
+    if (req.timeCritical && req.bandwidth == Consumption.low) {
+        return (new Completer()..complete(Execution.remote)).future;
     }
 
-    if ((req.cpu == Consumption.high && req.memory == Consumption.high) && req.bandwidth != Consumption.high) {
-      return (new Completer()
-        ..complete(Execution.remote)).future;
+    Execution cpuExec = Execution.local;
+    if (req.cpu == Consumption.medium || req.cpu == Consumption.high) {
+      if (req.bandwidth == Consumption.low) {
+        cpuExec = Execution.remote;
+      }
     }
-    return (new Completer()
-      ..complete(Execution.local)).future;
+
+    Execution memoryExec = Execution.local;
+    if (req.memory == Consumption.medium && req.bandwidth == Consumption.low) {
+      memoryExec = Execution.remote;
+    }
+    if (req.memory == Consumption.high && (req.bandwidth == Consumption.low || req.bandwidth == Consumption.medium)) {
+      memoryExec = Execution.remote;
+    }
+
+    if (cpuExec == Execution.remote || memoryExec == Execution.remote) {
+      return (new Completer()..complete(Execution.remote)).future;
+    }
+
+    return (new Completer()..complete(Execution.local)).future;
   }
 }
