@@ -17,6 +17,7 @@
 library adaptify.monitor.systemtools;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'base_monitor.dart';
@@ -64,25 +65,37 @@ class SystemToolsMonitor extends BaseMonitor {
 
     Completer completer = new Completer();
     if (Platform.isLinux) {
-      Process.run("sh", ["-c", "free -m  | awk 'FNR == 2 {print \$4}'"]).then((ProcessResult processResult) {
-        String result = processResult.stdout;
+      Process.start('free', ['-m']).then((p1) {
+        Process.start('awk', ['FNR == 2 {print \$4}']).then((p2) {
+          p1.stdout.pipe(p2.stdin);
+          p2.stdout.transform(UTF8.decoder).listen((data) {
+            try {
+              value = int.parse(data.trim());
+            } catch (exception) {
+              print('Could not fetch memory information.');
+            }
+            completer.complete(value);
+          });
+        });
+      });
+    } else if (Platform.isMacOS) {
+      Process.run("sysctl", ["-n", 'hw.memsize']).then((ProcessResult processResult) {
+        String result = (processResult.stdout).trim();
         try {
-          value = int.parse(result.trim());
+          value = int.parse(result);
+          value = (value / (1024*1024)).round();
         } catch (exception) {
           print('Could not fetch memory information.');
         }
         completer.complete(value);
       });
-    } else if (Platform.isMacOS) {
-      //TODO: Find a system tool for Mac OS X
-      completer.complete(0);
     } else if (Platform.isWindows) {
       Process.run("wmic", ["os get FreePhysicalMemory"]).then((ProcessResult processResult) {
         String result = processResult.stdout;
         String stringValue = result.split('\n')[1];
         try {
           value = int.parse(stringValue.trim());
-          value = (value/1024).round();
+          value = (value / 1024).round();
         } catch (exception) {
           print('Could not fetch memory information.');
         }
