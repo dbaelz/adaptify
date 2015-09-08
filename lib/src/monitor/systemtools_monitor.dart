@@ -48,11 +48,27 @@ class SystemToolsMonitor extends BaseMonitor {
         completer.complete(value);
       });
     } else if (Platform.isMacOS) {
-      //TODO: Find a system tool for Mac OS X
-      completer.complete(0);
+      Process.run("sysctl", ["-n", 'hw.cpufrequency_max']).then((ProcessResult processResult) {
+        String result = (processResult.stdout).trim();
+        try {
+          value = int.parse(result);
+          value = (value / (1000*1000)).round();
+        } catch (exception) {
+          print('Could not fetch CPU information.');
+        }
+        completer.complete(value);
+      });
     } else if (Platform.isWindows) {
-      //TODO: Find a system tool for windows
-      completer.complete(0);
+      Process.run("wmic", ["cpu get MaxClockSpeed"]).then((ProcessResult processResult) {
+        String result = processResult.stdout;
+        String stringValue = (result.split('\n')[1]).trim();
+        try {
+          value = int.parse(stringValue);
+        } catch (exception) {
+          print('Could not fetch CPU information.');
+        }
+        completer.complete(value);
+      });
     } else {
       completer.complete(0);
     }
