@@ -27,7 +27,7 @@ import 'base_monitor.dart';
 /// Supports Linux, Mac OS X and Windows.
 class SystemToolsMonitor extends BaseMonitor {
 
-  /// Not implemented yet, therefore returns 0 for all platforms.
+  /// Not supported yet, therefore returns 0 for all platforms.
   @override
   Future<int> measureBandwidth() {
     return (new Completer()..complete(0)).future;
