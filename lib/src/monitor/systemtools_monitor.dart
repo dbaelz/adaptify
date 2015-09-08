@@ -77,11 +77,12 @@ class SystemToolsMonitor extends BaseMonitor {
       //TODO: Find a system tool for Mac OS X
       completer.complete(0);
     } else if (Platform.isWindows) {
-      //TODO: Test this on a windows system
       Process.run("wmic", ["os get FreePhysicalMemory"]).then((ProcessResult processResult) {
         String result = processResult.stdout;
+        String stringValue = result.split('\n')[1];
         try {
-          value = int.parse(result.trim());
+          value = int.parse(stringValue.trim());
+          value = (value/1024).round();
         } catch (exception) {
           print('Could not fetch memory information.');
         }
