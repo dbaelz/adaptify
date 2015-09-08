@@ -75,7 +75,6 @@ class ObservatoryMonitor extends BaseMonitor {
         response = await connector.request('getVM');
         connector.close();
       } catch (exception) {
-        //TODO: Handle exception, especially SocketException
         return;
       }
 
@@ -104,7 +103,7 @@ class _ObservatoryConnector {
       WebSocket socket = await WebSocket.connect('ws://$host:$port/ws');
       return new _ObservatoryConnector(socket);
     } catch (exception) {
-      //TODO: Handle exception, especially SocketException
+      return;
     }
   }
 
@@ -116,7 +115,7 @@ class _ObservatoryConnector {
       _socket.add(JSON.encode({'id': _requestId, 'method': method, 'params': params,}));
       return _requests[_requestId++].future;
     }
-    //TODO: Return completeError
+    return {};
   }
 
   _handleResponse(String jsonResponse) {
