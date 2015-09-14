@@ -103,7 +103,9 @@ class _ObservatoryConnector {
       WebSocket socket = await WebSocket.connect('ws://$host:$port/ws');
       return new _ObservatoryConnector(socket);
     } catch (exception) {
-      return;
+      Completer completer = new Completer()
+        ..completeError(exception);
+      return completer.future;
     }
   }
 
