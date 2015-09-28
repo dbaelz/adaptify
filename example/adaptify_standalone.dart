@@ -23,7 +23,7 @@ import 'tasks/fibonacci.dart';
 
 main() async {
   ConsensusDecisionUnit decisionUnit = new ConsensusDecisionUnit([new ConditionalExpStrategy(new SystemToolsMonitor())]);
-  String decision = await decisionUnit.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  String decision = await decisionUnit.shouldExecuteLocally(Fibonacci) ? 'locally' : 'remotely';
   print('Fibonacci should be executed ${decision}');
 
 }

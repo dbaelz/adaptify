@@ -29,6 +29,6 @@ main() async {
     ..add(new ConditionalExpStrategy(new RandomMonitor()));
   ConsensusDecisionUnit decisionUnitMultiple = new ConsensusDecisionUnit(strategies);
 
-  String decisionMultiple = await decisionUnitMultiple.shouldExecutedLocal(Fibonacci) ? 'local' : 'remote';
+  String decisionMultiple = await decisionUnitMultiple.shouldExecuteLocally(Fibonacci) ? 'locally' : 'remotely';
   print('Fibonacci should be executed ${decisionMultiple}');
 }

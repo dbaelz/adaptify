@@ -32,7 +32,7 @@ abstract class BaseDecisionUnit {
   /// Returns true if the task should be executed local, otherwise false.
   ///
   /// This method usually evaluates all [strategies] for the decision.
-  Future<bool> shouldExecutedLocal(Type classType);
+  Future<bool> shouldExecuteLocally(Type classType);
 }
 
 /// The decision unit that evaluates all strategies and performs a consensus decision.
@@ -46,7 +46,7 @@ class ConsensusDecisionUnit extends BaseDecisionUnit {
   /// Performs a consensus decision of the [strategies].
   /// In case of a tie, it returns true.
   @override
-  Future<bool> shouldExecutedLocal(Type classType) async {
+  Future<bool> shouldExecuteLocally(Type classType) async {
     Requirement req = AnnotationParser.getRequirement(classType);
     if (req == null) {
       req = new Requirement();
