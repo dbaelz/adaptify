@@ -2,7 +2,7 @@ name: adaptify
 description: A library for adaptive decision-making with Dart.
 version: 0.0.1
 author: Daniel Bälz <me@dbaelz.de>
-#homepage: https://www.example.com
+homepage: https://github.com/dbaelz/adaptify
 
 environment:
   sdk: '>=1.0.0 <2.0.0'
