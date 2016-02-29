@@ -5,7 +5,7 @@ author: Daniel Bälz <me@dbaelz.de>
 homepage: https://github.com/dbaelz/adaptify
 
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=1.13.0 <2.0.0'
 
 dependencies:
   fuzzylogic: "^0.1.4"

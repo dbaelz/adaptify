@@ -4,6 +4,8 @@ This library was initially created for my master's thesis.
 Also, a second library for code distribution, called [Code Mobility](https://github.com/dbaelz/code_mobility), was developed.
 For more information on this topic see the [blog post](https://blog.inovex.de/adaptive-code-execution-with-dart/) on the blog of my employer [inovex GmbH](https://www.inovex.de/).
 
+For information how to use the library in a project see the description on the [Pub Repository](https://pub.dartlang.org/packages/adaptify).
+
 Description
 ---------
 The Adaptify library is responsible for the decision-making. It utilizes the three basic resources CPU, memory and bandwidth.
